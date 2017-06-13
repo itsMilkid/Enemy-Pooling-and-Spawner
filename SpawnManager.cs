@@ -22,36 +22,39 @@
 
 #endregion
 
+
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour {
 
-	[Header("Settings:")]
+	[Header("General Settings:")]
 	public string poolType;
-	public bool spawnInWaves;
-	public bool continouslySpawn;
-	public int maxAmountInScene;
-	public float spawnRange;
-	public LayerMask unspawnableLayers;
+	public int maxInScene;
+
+	[Header("Mode:")]
+	public SPAWNMODE spawnMode;
+	
+	[Header("Region:")]
+	public float spawnRadius;
 	public float objectRadius;
+	public LayerMask unwalkableLayers;
 
+	[HideInInspector] public enum SPAWNMODE{WAVE,PERMANENT};
+	[HideInInspector] public enum SPAWNSTATE{SPAWNING,WAITING};
 
-	private PoolingManager poolingManager;
-	private Vector3 currentSpawnpoint;
+	private EnemyPooling pooling;
 	private int spawnIndex;
+	private Vector3 currentSpawnpoint;
+
+	private SPAWNSTATE spawnState;
 	private List<GameObject> activeObjects = new List<GameObject>();
-
-	private SPAWNSTATE state;
-
-	private enum SPAWNSTATE{SPAWNING,WAITING};
 
 	private void Awake(){
 		activeObjects.Clear();
-		poolingManager = gameObject.GetComponentInParent<PoolingManager>();
 		spawnIndex = 0;
+		pooling = gameObject.GetComponentInParent<EnemyPooling>();
+	}
 
-		if(spawnInWaves == continouslySpawn){
-			spawnInWaves = !continouslySpawn;
-		}
+}
