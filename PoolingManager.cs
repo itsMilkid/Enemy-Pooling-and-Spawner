@@ -25,32 +25,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolingManager : MonoBehaviour {
+[System.Serializable]
+public class Pool  {
 
-	public Pool[] pools;
+	public string name;
+	public GameObject pooledObject;
+	public int poolSize;
+}
 
-	public Dictionary<string,List<GameObject>> activePools = new Dictionary<string,List<GameObject>>();
+public class EnemyPooling : MonoBehaviour {
+
+	public Pool[] enemyPools;
+	public Dictionary<string,List<GameObject>> poolsDictionairy = new Dictionary<string,List<GameObject>>();
 
 	private void Awake(){
-		InitiatePools();
+		InitiateAndPopulatePools();
 	}
 
-	private void InitiatePools(){
-		for(int i = 0; i < pools.Length; i++){
-			List<GameObject> newList = new List<GameObject>();
-			for(int j = 0; j < pools[i].poolSize; j++){
-				GameObject obj = (GameObject) Instantiate(pools[i].pooledObject,new Vector3(-20,-20,0), Quaternion.identity);
+	private void InitiateAndPopulatePools(){
+		for(int i = 0; i < enemyPools.Length; i++){
+			List<GameObject> newPool = new List<GameObject>();
+			for(int j = 0; j < enemyPools[i].poolSize; j++){
+				GameObject obj = (GameObject) Instantiate(enemyPools[i].pooledObject,new Vector3(-20,-20,0),Quaternion.identity);
 				obj.transform.parent = transform;
 				obj.SetActive(false);
-				newList.Add(obj);
+				newPool.Add(obj);
 			}
-			activePools.Add(pools[i].name,newList);
+			poolsDictionairy.Add(enemyPools[i].name,newPool);
 		}
-		Debug.Log(activePools.Count);
-		
-		for(int k= 0; k < pools.Length; k++){
-			Debug.Log(pools[k].name.ToString() + " " + activePools[pools[k].name].Count);
-		}
-	}
-
+	}	
 }
