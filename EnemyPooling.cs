@@ -42,6 +42,9 @@ public class EnemyPooling : MonoBehaviour {
 		InitiateAndPopulatePools();
 	}
 
+	//Loops through all the set pools, creates lists to store each of them and
+	//populates them with the given amount of enemies.
+	//Adds the pool-lists to a dictionairy.
 	private void InitiateAndPopulatePools(){
 		for(int i = 0; i < enemyPools.Length; i++){
 			List<GameObject> newPool = new List<GameObject>();
