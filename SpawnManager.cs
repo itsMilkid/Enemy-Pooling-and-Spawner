@@ -44,7 +44,7 @@ public class Spawner : MonoBehaviour {
 	[HideInInspector] public enum SPAWNMODE{WAVE,PERMANENT};
 	[HideInInspector] public enum SPAWNSTATE{SPAWNING,WAITING};
 
-	private float delayTimer;
+	private bool nextWave;
 	private EnemyPooling pooling;
 	private Vector3 currentSpawnpoint;
 	private SPAWNSTATE spawnState;
@@ -70,8 +70,13 @@ public class Spawner : MonoBehaviour {
 			}
 		//Respawns enemies in a wave as soon as all enemies are dead/gone
 		} else if (spawnMode == SPAWNMODE.WAVE){
+			if(activeObjects.Count == maxInScene){
+				nextWave = false;
+			}
+			
 			if(activeObjects.Count == 0){
-				if(spawnState == SPAWNSTATE.WAITING){
+				nextWave = true;
+				if(spawnState == SPAWNSTATE.WAITING && nextWave == true){
 					GenerateSpawnpoint();
 				}
 			}
